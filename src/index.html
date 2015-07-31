@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="mentalr">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=10,chrome=1" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <title>Mental Modeler</title>
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300" />
+    <link rel="stylesheet" type="text/css" href="/mentalr.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <base href="/" />
+</head>
+
+<body>
+    <div ng-controller="MentalrController" class="row">
+        <div class="rule"></div>
+        <div ng-repeat="p in personas track by $index" class="persona well">
+            <div class="actions">
+                <h3>
+                    {{ p.label }}
+                    <div>
+                        <button ng-click="editPersona(p)" class="btn btn-sm btn-default"><i class="fa fa-pencil-square-o"></i> Edit</button>
+                        <button ng-click="addNeed(p)" class="btn btn-sm btn-success"><i class="fa fa-plus-circle"></i> Add Need</button>
+                    </div>
+                </h3>
+                <div class="vertical" ng-repeat="v in p.verticals">
+                    <div class="card need {{ n.color }}" ng-repeat="n in v.needs" style="height: {{ (n.weight - 10) }}%;">
+                        <h4>
+                            {{ n.label }}
+                            <div>
+                                <button ng-click="editNeed(n, v, p)" class="btn btn-sm btn-default"><i class="fa fa-pencil-square-o"></i> Edit</button>
+                            </div>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+            <div class="features">
+                <div class="vertical" ng-repeat="v in p.verticals">
+                    <div class="card feature {{ f.color }}" ng-repeat="f in v.features">
+                        <h4>
+                            {{ f.label }}
+                            <div>
+                                <button ng-click="editFeature(f, v)" class="btn btn-sm btn-default"><i class="fa fa-pencil-square-o"></i> Edit</button>
+                            </div>
+                        </h4>
+                    </div>
+                    <button ng-click="addFeature(v)" class="btn btn-sm btn-success"><i class="fa fa-plus-circle"></i> Add Feature</button>
+                </div>
+            </div>
+        </div>
+        <div class="controls">
+            <button class="btn btn-md btn-success" ng-click="addPersona()"><i class="fa fa-plus-circle"></i> Add Persona</button>
+            <button class="btn btn-md btn-default" ng-click="import()"><i class="fa fa-file-code-o"></i> Import</button>
+            <button class="btn btn-md btn-default" ng-click="export()"><i class="fa fa-floppy-o"></i> Export</button>
+            <button class="btn btn-md btn-danger" ng-click="reset()"><i class="fa fa-times-circle-o"></i> Reset</button>
+        </div>
+
+        <div class="modal" id="personaModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Persona Properties</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="personaLabel">Label</label>
+                            <input type="text" id="personaLabel" class="form-control" ng-model="editorPersona.label" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button ng-if="editorPersonaMode == 'edit'" ng-click="deletePersona(editorPersona)" class="btn btn-danger pull-left"><i class="fa fa-times-circle-o"></i> Delete</button>
+                        <button ng-if="editorPersonaMode == 'new'" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary" ng-click="savePersona(editorPersona)">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" id="cardModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Card Properties</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="cardLabel">Label</label>
+                            <input type="text" id="cardLabel" class="form-control" ng-model="editorCard.label" />
+                        </div>
+                        <div ng-if="editorCardType == 'need'" class="form-group">
+                            <label for="cardColor">Weight</label>
+                            <select id="cardColor" class="form-control" ng-model="editorCard.weight">
+                                <option value="25">Small</option>
+                                <option value="60">Medium</option>
+                                <option value="75">Large</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="cardColor">Color</label>
+                            <select id="cardColor" class="form-control" ng-model="editorCard.color">
+                                <option value="white">White</option>
+                                <option value="black">Black</option>
+                                <option value="red">Red</option>
+                                <option value="orange">Orange</option>
+                                <option value="yellow">Yellow</option>
+                                <option value="green">Green</option>
+                                <option value="blue">Blue</option>
+                                <option value="purple">Purple</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="cardDescription">Description</label>
+                            <textarea id="cardDescription" class="form-control" ng-model="editorCard.description"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button ng-if="editorCardMode == 'edit'" ng-click="deleteCard(editorCard)" class="btn btn-danger pull-left"><i class="fa fa-times-circle-o"></i> Delete</button>
+                        <button ng-if="editorCardMode == 'new'" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary" ng-click="saveCard(editorCard)">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" id="codeModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">JSON Source Code</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <textarea class="form-control code" ng-model="jsonSource"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button ng-if="jsonSourceMode == 'export'" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button ng-if="jsonSourceMode == 'import'" class="btn btn-primary" ng-click="loadSource(jsonSource)">Import</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/mentalr.js"></script>
+</body>
+
+</html>

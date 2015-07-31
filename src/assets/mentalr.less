@@ -1,0 +1,226 @@
+// Core variables and mixins
+@import "./bower_components/bootstrap/less/variables.less";
+@import "./bower_components/bootstrap/less/mixins.less";
+
+// Reset and dependencies
+@import "./bower_components/bootstrap/less/normalize.less";
+//@import "./bower_components/bootstrap/less/print.less";
+
+// Core CSS
+@import "./bower_components/bootstrap/less/scaffolding.less";
+@import "./bower_components/bootstrap/less/type.less";
+@import "./bower_components/bootstrap/less/code.less";
+@import "./bower_components/bootstrap/less/grid.less";
+@import "./bower_components/bootstrap/less/tables.less";
+@import "./bower_components/bootstrap/less/forms.less";
+@import "./bower_components/bootstrap/less/buttons.less";
+@import "./bower_components/bootstrap/less/wells.less";
+@import "./bower_components/bootstrap/less/utilities.less";
+@import "./bower_components/bootstrap/less/modals.less";
+
+
+html, body {
+    width: 100%;
+    height: 100%;
+}
+
+.row {
+    width: 100%;
+    height: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+}
+
+.rule {
+    height: 1px;
+    width: 100%;
+    background-color: #999;
+    border-top: solid 1px #ccc;
+    top: 30%;
+    left: 0;
+    position: absolute;
+    z-index: 2;
+}
+
+.persona {
+    position: relative;
+    display: inline-block;
+    width: auto;
+    min-width: 240px;
+    height: 100%;
+    margin-left: 10px;
+    margin-bottom: 0;
+
+    &:last-child {
+        border-right: none;
+    }
+}
+
+.actions {
+    height: 30%;
+    position: relative;
+
+    h3 {
+        text-align: center;
+        font-family: 'Open Sans';
+        position: absolute;
+        text-shadow: 0 1px 0 #fff;
+        color: #ccc;
+        font-size: 30px;
+        margin-top: 0;
+        font-weight: 300;
+        width: 100%;
+    }
+
+    & > .vertical > .card {
+        position: absolute;
+        bottom: 7px;
+    }
+}
+
+.features {
+    height: 70%;
+}
+
+.vertical {
+    width: 240px;
+    height: 99%;
+    float: left;
+    text-align: center;
+}
+
+.card {
+    vertical-align: bottom;
+    border: solid 1px #eee;
+    .box-shadow(0 1px 3px rgba(0,0,0,.05));
+    width: 236px;
+    height: 150px;
+    min-height: 150px;
+    padding: 15px 30px;
+    margin-bottom: 10px;
+
+    h4 {
+        text-align: center;
+        font-family: 'Open Sans';
+        font-size: 24px;
+        white-space: normal;
+        font-weight: normal;
+
+        button {
+            margin-top: 10px;
+        }
+    }
+
+    &.white, &.white button {
+        background-color: #fff;
+
+        h4 {
+            color: #333;
+        }
+    }
+
+    &.black, &.black button {
+        background-color: #333;
+
+        h4, button {
+            color: #fff;
+        }
+
+        button {
+            border-color: #555;
+        }
+    }
+
+    &.red, &.red button {
+        background-color: #fcd4d1;
+
+        h4, button { 
+            color: #94070a; 
+        }
+
+        button {
+            border-color: #94070a; 
+        }
+    }
+
+    &.orange, &.orange button {
+        background-color: #fedcc6;
+
+        h4, button {
+            color: #985006;
+        }
+
+        button {
+            border-color: #985006;
+        }
+    }
+
+    &.yellow, &.yellow button {
+        background-color: #fffbcc;
+
+        h4, button {
+            color: #a09600;
+        }
+
+        button {
+            border-color: #a09600;
+        }
+    }
+
+    &.green, &.green button {
+        background-color: #e0efd4;
+
+        h4, button {
+            color: #407927;
+        }
+
+        button {
+            border-color: #407927;
+        }
+    }
+
+    &.blue, &.blue button {
+        background-color: #adc5e7;
+
+        h4, button {
+            color: #003d73;
+        }
+
+        button {
+            border-color: #003d73;
+        }
+    }
+
+    &.purple, &.purple button {
+        background-color: #dfcce4;
+
+        h4, button {
+            color: #390a5d;
+        }
+
+        button {
+            border-color: #390a5d;
+        }
+    }
+}
+
+.controls {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+}
+
+.persona-controls {
+    display: block;
+}
+
+textarea.form-control {
+    height: 200px;
+
+    &.code {
+        height:300px;
+        font-family:'Courier New';
+    }
+}
+
